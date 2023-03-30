@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         post.get({ plain: true })
       );
       // Send over the 'loggedIn' session variable to the 'homepage' template
-      res.render('homepage', {
+      res.render('all-posts', {
         posts,
         loggedIn: req.session.loggedIn,
       });
