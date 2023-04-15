@@ -3,7 +3,8 @@ const { Comment } = require("../../models/");
 const withAuth = require("../../utils/auth");
 
 router.post("/", withAuth, (req, res) => {
-  Comment.create({ ...req.body, userId: req.session.userId })
+  console.log(req.body)
+  Comment.create({ ...req.body, userId: req.session.user_id })
     .then(newComment => {
       res.json(newComment);
     })

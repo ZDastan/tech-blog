@@ -3,11 +3,12 @@ const { User } = require('../../models');
 
 router.post('/', async (req, res) => {
   try {
-    const userData = await User.create(req.body);
-
+    const userDataLowercase = await User.create(req.body);
+    const userData = userDataLowercase.get({plain:true});
+console.log(userData);
     req.session.save(() => {
       req.session.user_id = userData.id;
-      req.session.logged_in = true;
+      req.session.loggedIn = true;
 
       res.status(200).json(userData);
     });
@@ -17,28 +18,29 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+  
   try {
-    const userData = await User.findOne({ where: { username: req.body.usurname } });
-
+    const userData = await User.findOne({ where: { username: req.body.username }, raw:true });
+   
     if (!userData) {
       res
         .status(400)
-        .json({ message: 'Incorrect usurname or password, please try again' });
+        .json({ message: 'Incorrect username or password, please try again' });
       return;
     }
+    console.log(userData, req.body);
+    // const validPassword = await userData.checkPassword(req.body.password);
 
-    const validPassword = await userData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect usurname or password, please try again' });
-      return;
-    }
+    // if (!validPassword) {
+    //   res
+    //     .status(400)
+    //     .json({ message: 'Incorrect username or password, please try again' });
+    //   return;
+    // }
 
     req.session.save(() => {
       req.session.user_id = userData.id;
-      req.session.logged_in = true;
+      req.session.loggedIn = true;
 
       res.json({ user: userData, message: 'You are now logged in!' });
     });
@@ -49,7 +51,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  if (req.session.logged_in) {
+  if (req.session.loggedIn) {
     req.session.destroy(() => {
       res.status(204).end();
     });

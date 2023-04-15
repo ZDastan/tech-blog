@@ -1,6 +1,7 @@
 
 const router = require("express").Router();
 const { Post, Comment, User } = require("../models");
+const withAuth = require('../utils/auth');
 // GET all posts for homepage
 router.get('/', async (req, res) => {
     try {
@@ -26,7 +27,7 @@ router.get('/', async (req, res) => {
   // GET one post
 router.get('/post/:id', async (req, res) => {
     try {
-      const dbpostData = await Post.findByPk(req.params.id, {
+      const dbPostData = await Post.findByPk(req.params.id, {
         include: [
             User,
             {
@@ -37,17 +38,22 @@ router.get('/post/:id', async (req, res) => {
       });
   
       const post = dbPostData.get({ plain: true });
+      console.log('post', post);
       // Send over the 'loggedIn' session variable to the 'gallery' template
-      res.render('post', { post, loggedIn: req.session.loggedIn });
+      res.render('single-post', {
+        post, 
+        loggedIn: req.session.loggedIn 
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
   });
+  
 
   router.get("/login", (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    res.redirect("/dashboard");
     return;
   }
 
@@ -56,7 +62,7 @@ router.get('/post/:id', async (req, res) => {
 
 router.get("/signup", (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    res.redirect("/dashboard");
     return;
   }
 
