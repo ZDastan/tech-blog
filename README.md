@@ -8,16 +8,42 @@ and comment on other developers post as well.
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+git clone the repo to your local machine. To use this application, please run the following command:
+
+npm install.
+
+And then run the following commands to install the dependencies if you are not sure if they are up to date:
+
+npm i inquirer
+
+npm i sequelize
+
+npm i dotenv
+
+npm i express npm i express
 
 ## Usage
+Type the following command in your termimal: mysql -u root -p -- connect to your database and then run:
 
-Provide instructions and examples for use. Include screenshots as needed.
+source db/schema.sql
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+Quit mySQL shell. Run the following command to seed the files:
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+npm run seed
+
+Then run:
+
+npm start
+
+
+
+![alt text](./asset/image/tech-blog-image.png)
+
+    
+  
 https://github.com/ZDastan/tech-blog
+
+https://zehtech-app.herokuapp.com/
+
+
 
